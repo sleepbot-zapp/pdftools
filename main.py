@@ -32,7 +32,13 @@ def main():
         metavar="EXT",
         help=("--group EXT1 EXT2 *"),
     )
-
+    # TODO: compression
+    # parser.add_argument(
+    #     "--compress",
+    #     nargs="?",
+    #     default="none",
+    #     choices=["none", "low", "high",]
+    # )
     args = parser.parse_args()
 
     resize_cfg = parse_resize_args(args.resize)

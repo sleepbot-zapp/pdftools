@@ -13,8 +13,9 @@ from config import SUPPORTED_FORMATS
 
 
 class ImageToPDFConverter:
-    def __init__(self, resize=None):
+    def __init__(self, resize=None, compress=None):
         self.resize = resize
+        self.compress = compress    
         self.files = []
         self.global_mult = 1
         self.rules = []
