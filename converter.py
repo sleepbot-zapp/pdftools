@@ -16,19 +16,26 @@ from config import SUPPORTED_FORMATS
 class ImageToPDFConverter:
     def __init__(self, resize=None, compress="none"):
         self.resize = resize
-        self.compress = compress    
+        self.compress = compress
         self.files = []
         self.global_mult = 1
         self.rules = []
 
-    def load_images(self, paths, sort="asc", duplicate=None, group=None):
+    def load_images(self, paths, sort=("name", "asc"), duplicate=None, group=None):
         files = collect_files(paths)
         files = filter_supported(files, SUPPORTED_FORMATS)
+
+        if isinstance(sort, str):
+            field, order = sort.split(":")
+            sort = (field, order)
+
         if group is not None:
-            files = group_files(files, group, sort_order=sort)
+            files = group_files(files, group, sort_order=sort) # type: ignore
         else:
             files = sort_files(files, sort)
+
         self.files = files
+
         if duplicate:
             self.global_mult, self.rules = duplicate
         else:

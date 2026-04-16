@@ -1,6 +1,5 @@
 import os
 
-
 def collect_files(paths):
     out = []
     for p in paths:
@@ -20,5 +19,22 @@ def filter_supported(files, supported_formats):
     return [f for f in files if normalize_ext(f) in supported_formats]
 
 
-def sort_files(files, order="asc"):
-    return sorted(files, key=lambda x: os.path.basename(x), reverse=(order == "desc"))
+def sort_files(files, sort=("name", "asc")):
+    field, order = sort
+
+    reverse = (order == "desc")
+
+    def key_func(path):
+        if field == "name":
+            return os.path.basename(path).lower()
+
+        elif field == "file":
+            return os.path.splitext(path)[1].lower()
+
+        elif field == "date":
+            return os.path.getmtime(path)
+
+        else:
+            raise ValueError(f"Unsupported sort field: {field}")
+
+    return sorted(files, key=key_func, reverse=reverse)
