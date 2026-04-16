@@ -14,7 +14,6 @@ def main():
     parser.add_argument("inputs", nargs="+")
     parser.add_argument("-o", "--output", required=True)
 
-    # ✅ Updated sort argument
     parser.add_argument(
         "--sort",
         "-s",
@@ -56,7 +55,6 @@ def main():
 
     args = parser.parse_args()
 
-    # ✅ Normalize and validate --sort
     valid_fields = {"file", "name", "date"}
     valid_orders = {"asc", "desc"}
 
@@ -78,7 +76,6 @@ def main():
 
     args.sort = (field, order)
 
-    # ✅ Parse other configs
     resize_cfg = parse_resize_args(args.resize)
 
     try:
@@ -88,7 +85,6 @@ def main():
     except ValueError as e:
         parser.error(str(e))
 
-    # ✅ Run converter
     converter = ImageToPDFConverter(
         resize=resize_cfg,
         compress=compress_cfg,
@@ -96,7 +92,7 @@ def main():
 
     converter.load_images(
         args.inputs,
-        sort=args.sort, # type: ignore
+        sort=args.sort,
         duplicate=dup_cfg,
         group=group_cfg,
     )

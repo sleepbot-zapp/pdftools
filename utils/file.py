@@ -1,12 +1,23 @@
 import os
+import glob
+
 
 def collect_files(paths):
     out = []
     for p in paths:
-        if os.path.isdir(p):
+        matches = glob.glob(p, recursive=True)
+
+        if matches:
+            for match in matches:
+                if os.path.isdir(match):
+                    out.extend(os.path.join(match, f) for f in os.listdir(match))
+                else:
+                    out.append(match)
+        elif os.path.isdir(p):
             out.extend(os.path.join(p, f) for f in os.listdir(p))
         else:
             out.append(p)
+
     return out
 
 
@@ -22,7 +33,7 @@ def filter_supported(files, supported_formats):
 def sort_files(files, sort=("name", "asc")):
     field, order = sort
 
-    reverse = (order == "desc")
+    reverse = order == "desc"
 
     def key_func(path):
         if field == "name":

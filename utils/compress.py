@@ -36,7 +36,6 @@ def parse_compress_args(level):
     return level
 
 
-
 def fallback_compress_pdf(file_path, level):
     try:
         import fitz  # pymupdf
@@ -47,11 +46,7 @@ def fallback_compress_pdf(file_path, level):
 
     doc = fitz.open(file_path)
 
-    zoom_map = {
-        "low": 2.0,
-        "medium": 1.5,
-        "high": 1.0
-    }
+    zoom_map = {"low": 2.0, "medium": 1.5, "high": 1.0}
 
     zoom = zoom_map.get(level, 1.5)
 
@@ -82,11 +77,7 @@ def compress_pdf(file_path: str, level: str):
     temp_output = file_path + ".tmp.pdf"
 
     if gs_cmd:
-        quality_map = {
-            "low": "/printer",
-            "medium": "/ebook",
-            "high": "/screen"
-        }
+        quality_map = {"low": "/printer", "medium": "/ebook", "high": "/screen"}
 
         command = [
             gs_cmd,
@@ -97,7 +88,7 @@ def compress_pdf(file_path: str, level: str):
             "-dQUIET",
             "-dBATCH",
             f"-sOutputFile={temp_output}",
-            file_path
+            file_path,
         ]
 
         try:
@@ -109,7 +100,6 @@ def compress_pdf(file_path: str, level: str):
             if os.path.exists(temp_output):
                 os.remove(temp_output)
             raise RuntimeError(f"Ghostscript compression failed: {e}")
-
 
     try:
         return fallback_compress_pdf(file_path, level)

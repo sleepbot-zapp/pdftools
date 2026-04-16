@@ -7,7 +7,7 @@ from utils import (
     filter_supported,
     sort_files,
     group_files,
-    compress_pdf
+    compress_pdf,
 )
 from extra import Progress
 from config import SUPPORTED_FORMATS
@@ -30,7 +30,7 @@ class ImageToPDFConverter:
             sort = (field, order)
 
         if group is not None:
-            files = group_files(files, group, sort_order=sort) # type: ignore
+            files = group_files(files, group, sort_order=sort)
         else:
             files = sort_files(files, sort)
 
