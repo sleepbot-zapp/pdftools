@@ -78,10 +78,8 @@ class ImageToPDFConverter:
         if first is None:
             raise ValueError("No valid images found")
 
-        # Step 1: Save PDF
         first.save(output_path, save_all=True, append_images=rest)
 
-        # Step 2: Compress (if needed)
         if self.compress != "none":
             try:
                 compress_pdf(output_path, self.compress)

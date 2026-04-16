@@ -33,7 +33,7 @@ def main():
         help=("--group EXT1 EXT2 *"),
     )
     parser.add_argument(
-        "--compress",
+        "--compress none|low|medium|high",
         nargs="?",
         const="medium",
         default="none",
