@@ -7,13 +7,14 @@ from utils import (
     filter_supported,
     sort_files,
     group_files,
+    compress_pdf
 )
 from extra import Progress
 from config import SUPPORTED_FORMATS
 
 
 class ImageToPDFConverter:
-    def __init__(self, resize=None, compress=None):
+    def __init__(self, resize=None, compress="none"):
         self.resize = resize
         self.compress = compress    
         self.files = []
@@ -45,10 +46,12 @@ class ImageToPDFConverter:
         first = None
         rest = []
         count = 0
+
         for _ in range(self.global_mult):
             for i, path in enumerate(self.files):
                 page = i + 1
                 mult = get_multiplier(page, self.rules)
+
                 for _ in range(mult):
                     try:
                         img = Image.open(path)
@@ -66,13 +69,25 @@ class ImageToPDFConverter:
 
                     except Exception as e:
                         print(f"\n[SKIP] {path}: {e}")
+
                     count += 1
                     tracker.update()
+
         print()
 
         if first is None:
             raise ValueError("No valid images found")
+
+        # Step 1: Save PDF
         first.save(output_path, save_all=True, append_images=rest)
+
+        # Step 2: Compress (if needed)
+        if self.compress != "none":
+            try:
+                compress_pdf(output_path, self.compress)
+                print(f"[COMPRESS] Applied: {self.compress}")
+            except Exception as e:
+                print(f"[WARN] Compression failed: {e}")
 
         tracker.finish(count)
         print(f"[DONE] Saved: {output_path}")

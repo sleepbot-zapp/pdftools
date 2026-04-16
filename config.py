@@ -1,5 +1,5 @@
 SUPPORTED_BASE = (".jpg", ".png", ".webp", ".bmp", ".tiff")
-SUPPORTED_FORMATS = set(SUPPORTED_BASE)
+SUPPORTED_FORMATS: set[str] = set(SUPPORTED_BASE)
 
 try:
     import pillow_heif

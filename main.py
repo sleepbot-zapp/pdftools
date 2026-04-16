@@ -1,12 +1,12 @@
 import argparse
 from converter import ImageToPDFConverter
-from utils import parse_group_args, parse_duplicate_args, parse_resize_args
+from utils import parse_group_args, parse_duplicate_args, parse_resize_args, parse_compress_args
 
 
 def main():
     parser = argparse.ArgumentParser(description="Image -> PDF")
 
-    parser.add_argument("inputs", nargs="+", required=True)
+    parser.add_argument("inputs", nargs="+")
     parser.add_argument("-o", "--output", required=True)
 
     parser.add_argument(
@@ -32,13 +32,13 @@ def main():
         metavar="EXT",
         help=("--group EXT1 EXT2 *"),
     )
-    # TODO: compression
-    # parser.add_argument(
-    #     "--compress",
-    #     nargs="?",
-    #     default="none",
-    #     choices=["none", "low", "high",]
-    # )
+    parser.add_argument(
+        "--compress",
+        nargs="?",
+        const="medium",
+        default="none",
+        choices=["none", "low", "medium", "high",]
+    )
     args = parser.parse_args()
 
     resize_cfg = parse_resize_args(args.resize)
@@ -46,10 +46,11 @@ def main():
     try:
         dup_cfg = parse_duplicate_args(args.duplicate)
         group_cfg = parse_group_args(args.group)
+        compress_cfg = parse_compress_args(args.compress)
     except ValueError as e:
         parser.error(str(e))
 
-    converter = ImageToPDFConverter(resize=resize_cfg)
+    converter = ImageToPDFConverter(resize=resize_cfg, compress=compress_cfg)
     converter.load_images(
         args.inputs,
         sort=args.sort,
