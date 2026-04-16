@@ -47,6 +47,7 @@ def main():
 
     parser.add_argument(
         "--compress",
+        "-c",
         nargs="?",
         const="medium",
         default="none",
