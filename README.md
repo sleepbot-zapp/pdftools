@@ -26,3 +26,6 @@ A fast cli tool I made to make faster pdfs from images.
 | `-d, --duplicate`| Duplicate images globally and/or per page                                       | `--duplicate 2 3=4`               |
 | `-g, --group`    | Group images by extensions (supports wildcard `*` patterns)                 | `--group jpg png *`                   |
 | `--compress`     | Compression level (`none`, `low`, `medium`, `high`)                         | `--compress high`                     |      |
+
+
+<small>Reccomended download: [Ghostscript](https://www.ghostscript.com/releases/gsdnld.html)</small>
